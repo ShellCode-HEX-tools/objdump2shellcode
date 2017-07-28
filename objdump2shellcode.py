@@ -142,12 +142,12 @@ class format_dump():
 			print "unsigned char buf[] = "
 			for i in range(len(no_junk)):
 				if i != (len(no_junk)-1):
-					print("\\x%s\"\t// %s" % (
+					print("\"\\x%s\"\t// %s" % (
 						no_junk[i].replace(" ", "\\x"),
 						instructions[i])
 					).expandtabs(30)
 				else:
-					print("\\x%s\";\t// %s" % (
+					print("\"\\x%s\";\t// %s" % (
 						no_junk[i].replace(" ", "\\x"),
 						instructions[i])
 					).expandtabs(30)
