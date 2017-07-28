@@ -202,12 +202,11 @@ def main():
 	mode		= args.format
 	badchars	= args.badchar
 	comment_code	= args.comment
-	# pass to function
+	# pass to function (thank you @justsam)
 	if dumpfile > 1:
-		if dumpfile > 1:
-			begin_dump(dumpfile, mode, badchars, comment_code)
-		else:
-			print(parser.print_help())
+		begin_dump(dumpfile, mode, badchars, comment_code)
+	else:
+		print(parser.print_help())
 
 if __name__ == '__main__':
 	main()
