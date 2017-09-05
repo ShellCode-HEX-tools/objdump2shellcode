@@ -8,6 +8,7 @@ objdump2shellcode can aid in the following
   - format output in various languages (python, c, powershell, javascript, etc)
   - accept shellcode via stdin and format it / detect bad characters
   - commented dump for shellcode submissions etc
+  - custom encoding
 
 ### Example of bad character identification
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/c_dump.png)
