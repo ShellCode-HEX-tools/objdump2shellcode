@@ -1,12 +1,52 @@
 # objdump2shellcode
-A very simple tool that dumps shellcode from a provided binary. This tool is useful when encoding and creating custom shellcode as it includes bad character detection. Below is an example of dumping in nasm format, making copying/pasting into an encoder an ease:
 
-![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/nasm_output.png)
+objdump2shellcode is a very simple tool that dumps shell code from a provided binary. Normally when generating shellcode we will be dealing with a varying amount of opcodes -> instructions, making custom shellcoding a bit of a hassle when debugging issues. 
 
-We can also change the variable name, this can come in handy so that you dont have to change every variable in your exploit:
+objdump2shellcode can aid in the following
 
-![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/panda.png)
+  - identifying instructions resulting in bad opcodes (aka bad characters)
+  - format output in various languages (python, c, powershell, javascript, etc)
+  - accept shellcode via stdin and format it / detect bad characters
+  - commented dump for shellcode submissions etc
 
-Of course we can also do a comment dump. Handy for submissions:
-
+### Example of bad character identification
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/c_dump.png)
+
+# What objdump2shellcode will not do
+
+  - generate shellcode from nothing (you must have a binary to extract opcodes from)
+  - generate a standalone exe / elf binary
+
+### Installation
+
+objdump2shellcode requires [objdump](https://blackarch.org/) to run properly, and 99% of linux distro's have it installed by default. However I recommend a pentration testing distro such as Black Arch, or Kali Linux. Python 3.5 and 2.7 compatible.
+
+For ease of access I recommend adding it to the /usr/bin/ directory like so:
+
+```sh
+$ chmod +x objdump2shellcode.py
+$ cp objdump2shellcode.py /usr/bin/
+$ objdump2shellcode.py 
+usage: objdump2shellcode.py [-h] [-d DUMP] [-s] [-f FORMAT] [-b BADCHAR] [-c]
+                            [-v VARNAME] [-l]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d DUMP, --dump DUMP  binary to use for shellcode extraction (via objdump)
+  -s, --stdin           read ops from stdin (EX: echo "\xde\xad\xbe\xef" |
+                        objdump2shellcode.py -s -f python -b "\xbe")
+  -f FORMAT, --format FORMAT
+                        output format (use --list for a list)
+  -b BADCHAR, --badchar BADCHAR
+                        seperate badchars like so "\x00,\x0a"
+  -c, --comment         comments the shellcode output
+  -v VARNAME, --varname VARNAME
+                        alternative variable name
+  -l, --list            list all available formats
+```
+
+License
+----
+
+MIT
+**Free Software, Hell Yeah!**
