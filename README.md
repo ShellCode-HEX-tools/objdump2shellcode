@@ -13,14 +13,19 @@ objdump2shellcode can aid in the following
 ### Example of bad character identification
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/c_dump.png)
 
-# What objdump2shellcode will not do
+### If you use BlackArch Linux objdump2shellcode comes installed
+![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/abatchy_shellcode.PNG)
+
+You can download BlackArch here :smiley: : https://blackarch.org/
+
+### What objdump2shellcode will not do
 
   - generate shellcode from nothing (you must have a binary to extract opcodes from)
   - generate a standalone exe / elf binary
 
 ### Installation
 
-objdump2shellcode requires [objdump](https://blackarch.org/) to run properly, and 99% of linux distro's have it installed by default. However I recommend a pentration testing distro such as Black Arch, or Kali Linux. Python 3.5 and 2.7 compatible.
+objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a pentration testing distro such as Black Arch, or Kali Linux. Python 3.5 and 2.7 compatible.
 
 For ease of access I recommend adding it to the /usr/bin/ directory like so:
 
