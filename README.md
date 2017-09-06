@@ -1,6 +1,6 @@
 # objdump2shellcode
 
-objdump2shellcode is a very simple tool that dumps shell code from a provided binary. Normally when generating shellcode we will be dealing with a varying amount of opcodes -> instructions, making custom shellcoding a bit of a hassle when debugging issues. 
+objdump2shellcode is a very simple tool that dumps shellcode from a provided binary. Normally when generating shellcode we will be dealing with a varying amount of opcodes -> instructions, making custom shellcoding a bit of a hassle when debugging issues. 
 
 objdump2shellcode can aid in the following
 
@@ -8,7 +8,7 @@ objdump2shellcode can aid in the following
   - format output in various languages (python, c, powershell, javascript, etc)
   - accept shellcode via stdin and format it / detect bad characters
   - commented dump for shellcode submissions etc
-  - custom encoding
+  - custom encoding (nasm dump; think xor encoding etc)
 
 ### Example of bad character identification
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/c_dump.png)
@@ -21,7 +21,7 @@ You can download BlackArch here :smiley: : https://blackarch.org/
 ### What objdump2shellcode will not do
 
   - generate shellcode from nothing (you must have a binary to extract opcodes from)
-  - generate a standalone exe / elf binary
+  - generate a standalone exe / elf binary (may add this feature at a later date)
 
 ### Installation
 
@@ -30,17 +30,17 @@ objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binuti
 For ease of access I recommend adding it to the /usr/bin/ directory like so:
 
 ```sh
-$ chmod +x objdump2shellcode.py
-$ cp objdump2shellcode.py /usr/bin/
-$ objdump2shellcode.py 
-usage: objdump2shellcode.py [-h] [-d DUMP] [-s] [-f FORMAT] [-b BADCHAR] [-c]
+root@wetw0rk:~# chmod +x objdump2shellcode.py
+root@wetw0rk:~# cp objdump2shellcode.py /usr/bin/objdump2shellcode
+root@wetw0rk:~# objdump2shellcode
+usage: objdump2shellcode [-h] [-d DUMP] [-s] [-f FORMAT] [-b BADCHAR] [-c]
                             [-v VARNAME] [-l]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DUMP, --dump DUMP  binary to use for shellcode extraction (via objdump)
   -s, --stdin           read ops from stdin (EX: echo "\xde\xad\xbe\xef" |
-                        objdump2shellcode.py -s -f python -b "\xbe")
+                        objdump2shellcode -s -f python -b "\xbe")
   -f FORMAT, --format FORMAT
                         output format (use --list for a list)
   -b BADCHAR, --badchar BADCHAR
@@ -56,3 +56,4 @@ License
 
 MIT
 **Free Software, Hell Yeah!**
+
