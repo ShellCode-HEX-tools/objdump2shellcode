@@ -469,7 +469,7 @@ def objdump(dumpfile, mode, badchars, comment_code, var_name):
 
 	# run objdump to disassemble the binary
 	try:
-		intel_dump = subprocess.Popen(['objdump', '-D', dumpfile, '-M', 'intel'],
+		intel_dump = subprocess.Popen(['objdump', '-D', dumpfile, '-M', 'intel', '--insn-width=15'],
 			stdout=subprocess.PIPE).communicate()[0]
 	except:
 		print("[-] error running command")
