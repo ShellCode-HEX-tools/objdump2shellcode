@@ -96,15 +96,12 @@ def format_list():
 		sn += "{:s}, ".format(supported_norm[i])
 
 	print(sn[:len(sn)-2])
-
 	# comment supported languages
 	print("Comment dump:")
 	for i in range(len(supported_comment)):
 		sc += "{:s}, ".format(supported_comment[i])
 
 	print(sc[:len(sc)-2])
-
-	print("No badchar detection support:\n\tcsharp, dword, num, powershell, java, nasm")
 
 class format_dump():
 
@@ -128,8 +125,6 @@ class format_dump():
 			for i in range(len(sep_chars)):
 				if sep_chars[i] in self.ops:
 					spotted += ("{:s}".format(sep_chars[i])),
-
-		print("Payload size: {:d} bytes".format(int(len(self.ops)/4)))
 
 		# here we begin to spot the badchars should we find one
 		# we will replace it with a bold and red opcode, simply
@@ -165,6 +160,8 @@ class format_dump():
 		return
 
 	def informational_dump(self):
+
+		print("Payload size: {:d} bytes".format(int(len(self.ops)/4)))
 
 		global no_junk, instructions, op_line, done
 
@@ -293,6 +290,8 @@ class format_dump():
 
 		results = []
 
+		print("Payload size: {:d} bytes".format(int(len(self.ops)/4)))
+
 		if self.mode == "python":
 			num = 60
 			self.character_analysis(num, results)
@@ -355,7 +354,7 @@ class format_dump():
 					print("\"{:s}\" .".format(results[i]))
 
 		if self.mode == "csharp":
-			print("byte[] {:s} = new byte[{:d}] {:s}".format(self.var_name, int(len(self.ops)/4), "{"))
+			num = 75
 			sharp = ""
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
@@ -363,16 +362,26 @@ class format_dump():
 					pass
 				else:
 					sharp += "0x{:s},".format(asm_ops[i])
-			split = [sharp[x:x+75] for x in range(0,len(sharp),75)]
-			for i in range(len(split)):
-				snip = len(split[i]) - 1
-				if i == (len(split)-1):
-					print(split[i][:snip] + " };")
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with csharp opcodes
+			save_length = "{:d}".format(int(len(self.ops)/4)) # save byte length
+			self.ops = sharp
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","0x")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+			print("byte[] {:s} = new byte[{:s}] {:s}".format(self.var_name, save_length, "{"))
+			for i in range(len(results)):
+				snip = len(results[i]) - 1
+				if i == (len(results)-1):
+					print(results[i][:snip] + " };")
 				else:
-					print(split[i])
+					print(results[i])
 
 		if self.mode == "dword":
+			num = 94
 			dword = ""
+			done = ""
 			dlist = []
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
@@ -380,27 +389,47 @@ class format_dump():
 					pass
 				else:
 					dword += "{:s}".format(asm_ops[i])
+
+			# format into dword format
 			splits = [dword[x:x+8] for x in range(0,len(dword),8)]
 			for i in range(len(splits)):
 				s = splits[i]
 				dlist += "0x" + "".join(map(str.__add__, s[-2::-2] ,s[-1::-2])),
 			for i in range(int(len(dlist)/8+1)):
-				print(", ".join(dlist[i*8:(i+1)*8]))
+				done += ", ".join(dlist[i*8:(i+1)*8])
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with hex opcodes
+			self.ops = done
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+			for i in range(len(results)):
+				print(results[i])
 
 		if self.mode == "nasm":
 			nasm = ""
+			num = 60
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
 				if asm_ops[i] == '':
 					pass
 				else:
 					nasm += "0x{:s},".format(asm_ops[i])
-			split = [nasm[x:x+40] for x in range(0,len(nasm),40)]
-			for i in range(len(split)):
-				snip = len(split[i]) - 1
-				print("db " + split[i][:snip])
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with nasm opcodes
+			self.ops = nasm
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","0x")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+
+			for i in range(len(results)):
+				snip = len(results[i]) - 1
+				print("db " + results[i][:snip])
 
 		if self.mode == "num":
+			num = 84
 			raw_ops = ""
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
@@ -408,50 +437,68 @@ class format_dump():
 					pass
 				else:
 					raw_ops += "0x%s, " % (asm_ops[i])
-			split = [raw_ops[x:x+84] for x in range(0,len(raw_ops),84)]
-			for i in range(len(split)):
-				snip = len(split[i]) - 2
-				if i == (len(split)-1):
-					print(split[i][:snip])
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with opcodes
+			self.ops = raw_ops
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","0x")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+
+			for i in range(len(results)):
+				snip = len(results[i]) - 2
+				if i == (len(results)-1):
+					print(results[i][:snip])
 				else:
-					print(split[i])
+					print(results[i])
 
 		if self.mode == "powershell":
+			num = 50
 			raw_ops = ""
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
 				if asm_ops[i] == '':
 					pass
 				else:
-					raw_ops += "0x%s," % (asm_ops[i])
-			split = [raw_ops[x:x+50] for x in range(0,len(raw_ops),50)]
-			for i in range(len(split)):
-				snip = len(split[i]) - 1
+					raw_ops += "0x%s " % (asm_ops[i])
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with opcodes
+			self.ops = raw_ops
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","0x")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+
+			for i in range(len(results)):
+				snip = len(results[i]) - 1
 				if i == 0:
-					print("[Byte[]] {:s} = {:s}".format(self.var_name, split[i][:snip]))
+					print("[Byte[]] {:s} = {:s}".format(self.var_name, results[i].replace(" ", ",")[:snip]))
 				else:
-					print("${:s} += {:s}".format(self.var_name, split[i][:snip]))
+					print("${:s} += {:s}".format(self.var_name, results[i].replace(" ", ",")[:snip]))
 
 		if self.mode == "java":
-			print("byte {:s}[] = new byte[]".format(self.var_name))
-			print("{")
+			num = 104
 			javop = ""
-			javlt = []
+			javlt = ""
 			asm_ops = self.ops.split("\\x")
 			for i in range(len(asm_ops)):
 				if asm_ops[i] == '':
 					pass
 				else:
-					javop += "{:s}".format(asm_ops[i])
-			splits = [javop[x:x+2] for x in range(0,len(javop),2)]
-			for i in range(len(splits)):
-				s = splits[i]
-				javlt  += "(byte) 0x" + "".join(map(str.__add__, s[-2::-2] ,s[-1::-2])),
-			for i in range(int(len(javlt)/8+1)):
-				if i < (len(javlt)/8):
-					print("\t" + ", ".join(javlt[i*8:(i+1)*8]) + ",")
-				else:
-					print("\t" + ", ".join(javlt[i*8:(i+1)*8]))
+					javop += " (byte) 0x{:s},".format(asm_ops[i])
+
+			# overwrite shellcode + badchars (example \xde\xad\xbe\xef) with java opcodes
+			self.ops = javop
+			if self.badchars != None:
+				self.badchars = self.badchars.replace("\\x","(byte) 0x")
+			# send it of for character character_analysis
+			self.character_analysis(num, results)
+
+			print("byte {:s}[] = new byte[]".format(self.var_name))
+			print("{")
+			for i in range(len(results)):
+				print("\t" + results[i].lstrip(" "))
+
 			print("};")
 
 def objdump(dumpfile, mode, badchars, comment_code, var_name):
