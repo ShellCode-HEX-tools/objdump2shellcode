@@ -565,7 +565,7 @@ def main():
 	# handle command line arguments
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-d", "--dump",     help="binary to use for shellcode extraction (via objdump)")
-	parser.add_argument("-s", "--stdin",    help="read ops from stdin (EX: echo \"\\xde\\xad\\xbe\\xef\" | objdump2shellcode -s -f python -b \"\\xbe\")", action="store_true")
+	parser.add_argument("-s", "--stdin",    help="read ops from stdin (EX: echo -ne \"\\xde\\xad\\xbe\\xef\" | objdump2shellcode -s -f python -b \"\\xbe\")", action="store_true")
 	parser.add_argument("-f", "--format",   help="output format (use --list for a list)")
 	parser.add_argument("-b", "--badchar",  help="seperate badchars like so \"\\x00,\\x0a\"")
 	parser.add_argument("-c", "--comment",  help="comments the shellcode output", action="store_true")
@@ -596,10 +596,19 @@ def main():
 		objdump(dumpfile, mode, badchars, comment_code, var_name)
 	# if requested read from stdin
 	elif args.stdin == True:
-		for line in sys.stdin.readlines():
-			ops = line.rstrip()
-			format = format_dump(ops, mode, var_name, badchars)
-			format.tactical_dump()
+		raw_shellcode	= []
+		ops		= ""
+
+		# integers we will format in hexadecimal this
+		# this is what will be sent to format_dump()
+		for line in sys.stdin.buffer.raw.read():
+			raw_shellcode += line,
+
+		for i in range(len(raw_shellcode)):
+			ops += "\\x{:02x}".format(raw_shellcode[i]).replace('0x','\\x')
+
+		format = format_dump(ops, mode, var_name, badchars)
+		format.tactical_dump()
 	else:
 		print(parser.print_help())
 
