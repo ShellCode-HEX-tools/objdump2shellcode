@@ -1,6 +1,3 @@
-[![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?style=plastic)](https://www.python.org/)
-[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](http://choosealicense.com/licenses/mit/)
-
 # objdump2shellcode
 
 objdump2shellcode is a very simple tool that dumps shellcode from a provided binary. Normally when generating shellcode we will be dealing with a varying amount of opcodes -> instructions, making custom shellcoding a bit of a hassle when debugging issues. 
