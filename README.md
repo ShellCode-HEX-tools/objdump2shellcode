@@ -1,3 +1,6 @@
+[![PyPI](https://img.shields.io/pypi/pyversions/Django.svg?style=plastic)](https://www.python.org/)
+[![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg?style=plastic)](http://choosealicense.com/licenses/mit/)
+
 # objdump2shellcode
 
 objdump2shellcode is a very simple tool that dumps shellcode from a provided binary. Normally when generating shellcode we will be dealing with a varying amount of opcodes -> instructions, making custom shellcoding a bit of a hassle when debugging issues. 
@@ -13,7 +16,7 @@ objdump2shellcode can aid in the following
 ### Example of bad character identification
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/c_dump.png)
 
-### If you use BlackArch Linux objdump2shellcode comes installed
+### If you use BlackArch Linux, objdump2shellcode comes preinstalled
 ![alt text](https://raw.githubusercontent.com/wetw0rk/objdump2shellcode/master/pictures/abatchy_shellcode.PNG)
 
 You can download BlackArch here :smiley: : https://blackarch.org/
@@ -25,7 +28,7 @@ You can download BlackArch here :smiley: : https://blackarch.org/
 
 ### Installation
 
-objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a pentration testing distro such as Black Arch, or Kali Linux. Python 3.5 and 2.7 compatible.
+objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a penetration testing distro such as Black Arch, or Kali Linux.
 
 For ease of access I recommend adding it to the /usr/bin/ directory like so:
 
@@ -50,10 +53,3 @@ optional arguments:
                         alternative variable name
   -l, --list            list all available formats
 ```
-
-License
-----
-
-MIT
-**Free Software, Hell Yeah!**
-
