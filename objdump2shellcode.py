@@ -79,6 +79,7 @@ def format_list():
 	'num',
 	'powershell',
 	'ruby',
+	'raw',
 	]
 
 	supported_comment = [
@@ -290,7 +291,12 @@ class format_dump():
 
 		results = []
 
-		print("Payload size: {:d} bytes".format(int(len(self.ops)/4)))
+		if self.mode != "raw":
+			print("Payload size: {:d} bytes".format(int(len(self.ops)/4)))
+
+		if self.mode == "raw":
+			raw_ops = self.ops.decode('string_escape')
+			sys.stdout.write(raw_ops)
 
 		if self.mode == "python":
 			num = 60

@@ -50,3 +50,11 @@ optional arguments:
                         alternative variable name
   -l, --list            list all available formats
 ```
+
+License
+----
+
+MIT
+
+
+**Free Software, Hell Yeah!**
