@@ -25,7 +25,7 @@ You can download BlackArch here :smiley: : https://blackarch.org/
 
 ### Installation
 
-objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a penetration testing distro such as Black Arch, or Kali Linux.
+objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a penetration testing distro such as Black Arch, or Kali Linux. However, if you compile your assembly instructions in NASM objdump is not necessary! Simply run --raw-dump or -rb and your shellcode will be extracted and formatted :wink:.
 
 For ease of access I recommend adding it to the /usr/bin/ directory like so:
 
@@ -33,13 +33,16 @@ For ease of access I recommend adding it to the /usr/bin/ directory like so:
 root@wetw0rk:~# chmod +x objdump2shellcode.py
 root@wetw0rk:~# cp objdump2shellcode.py /usr/bin/objdump2shellcode
 root@wetw0rk:~# objdump2shellcode
-usage: objdump2shellcode [-h] [-d DUMP] [-s] [-f FORMAT] [-b BADCHAR] [-c]
-                            [-v VARNAME] [-l]
+usage: objdump2shellcode [-h] [-d DUMP] [-rd RAW_DUMP] [-s] [-f FORMAT]
+                         [-b BADCHAR] [-c] [-v VARNAME] [-l]
 
 optional arguments:
   -h, --help            show this help message and exit
   -d DUMP, --dump DUMP  binary to use for shellcode extraction (via objdump)
-  -s, --stdin           read ops from stdin (EX: echo "\xde\xad\xbe\xef" |
+  -rd RAW_DUMP, --raw-dump RAW_DUMP
+                        dump the shellcode from provided file without using
+                        objdump
+  -s, --stdin           read ops from stdin (EX: echo -ne "\xde\xad\xbe\xef" |
                         objdump2shellcode -s -f python -b "\xbe")
   -f FORMAT, --format FORMAT
                         output format (use --list for a list)
@@ -58,3 +61,4 @@ MIT
 
 
 **Free Software, Hell Yeah!**
+
