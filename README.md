@@ -25,7 +25,7 @@ You can download BlackArch here :smiley: : https://blackarch.org/
 
 ### Installation
 
-objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a penetration testing distro such as Black Arch, or Kali Linux. However, if you compile your assembly instructions in NASM objdump is not necessary! Simply run --raw-dump or -rb and your shellcode will be extracted and formatted :wink:.
+objdump2shellcode requires [objdump](https://sourceware.org/binutils/docs/binutils/objdump.html) to run properly, and 99% of linux distro's have it installed by default. However I recommend a penetration testing distro such as Black Arch, or Kali Linux. However, if you compile your assembly instructions in NASM objdump is not necessary! Simply run --raw-dump or -rd and your shellcode will be extracted and formatted :wink:.
 
 For ease of access I recommend adding it to the /usr/bin/ directory like so:
 
